@@ -39,3 +39,35 @@ nav a {
 nav a:hover {
     background: #45638f;
 }
+
+
+/* Erlang runtime evolution timeline */
+
+.runtime-timeline {
+    border-left: 3px solid #263a59;
+    margin: 25px 0;
+    padding-left: 25px;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: #f1f4f9;
+    border-radius: 8px;
+}
+
+.timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -34px;
+    top: 20px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #263a59;
+}
+
+.timeline-item h4 {
+    margin-top: 0;
+}
