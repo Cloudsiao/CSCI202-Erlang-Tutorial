@@ -17,8 +17,127 @@
     <main>
         <a href="../index.html">Back to Home</a>
 
-        <h2>Prolog vs. Erlang</h2>
-        <p>Content will be added here.</p>
+        
+<section id="prolog">
+    <h2>Prolog vs. Erlang</h2>
+
+    <h3>Features Inherited from Prolog</h3>
+
+    <p>
+        Erlang was originally developed using Prolog,
+        and several Prolog features were retained in
+        Erlang's syntax and programming conventions.
+        These include atoms, variable naming conventions,
+        dynamic typing, recursion, clause-based definitions,
+        and list notation.
+    </p>
+
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>Prolog</th>
+                <th>Erlang</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Atoms</td>
+                <td><code>john</code></td>
+                <td><code>john</code></td>
+            </tr>
+            <tr>
+                <td>Variables</td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+            </tr>
+            <tr>
+                <td>Dynamic Typing</td>
+                <td>No fixed variable type declarations</td>
+                <td>No fixed variable type declarations</td>
+            </tr>
+            <tr>
+                <td>Lists</td>
+                <td><code>[1,2,3]</code></td>
+                <td><code>[1,2,3]</code></td>
+            </tr>
+            <tr>
+                <td>Head-Tail Notation</td>
+                <td><code>[H|T]</code></td>
+                <td><code>[H|T]</code></td>
+            </tr>
+            <tr>
+                <td>Clauses</td>
+                <td>Predicate clauses</td>
+                <td>Function clauses</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Example: Head-Tail List Notation</h3>
+
+    <p>
+        Both Prolog and Erlang use [H|T] notation.
+        H represents the first element (head), while
+        T represents the remaining elements (tail).
+        The underscore (_) means the remaining
+        elements are ignored in these examples.
+    </p>
+
+    <h4>Prolog - Predicate</h4>
+    <pre><code>first([H|_], H).</code></pre>
+
+    <p>Query:</p>
+    <pre><code>?- first([10,20,30], X).</code></pre>
+
+    <p>Result:</p>
+    <pre><code>X = 10</code></pre>
+
+    <h4>Erlang - Function</h4>
+    <pre><code>first([H|_]) -> H.</code></pre>
+
+    <p>Function call:</p>
+    <pre><code>first([10,20,30]).</code></pre>
+
+    <p>Result:</p>
+    <pre><code>10</code></pre>
+
+    <p>
+        <strong>Key Difference:</strong>
+        Prolog uses unification to bind X to 10,
+        while Erlang matches the list and returns
+        the value of H directly.
+    </p>
+
+    
+<h3>Unification vs. Pattern Matching</h3>
+
+<p>
+    Prolog uses two-way unification, which attempts
+    to make two terms identical by binding variables
+    on either side. Erlang instead uses one-way
+    pattern matching, where a left-hand pattern
+    is matched against a right-hand value.
+</p>
+
+<div class="matching-demo">
+    <h4>Step-by-Step Matching</h4>
+
+    <label for="language-choice">Language:</label>
+    <select id="language-choice">
+        <option value="prolog">Prolog</option>
+        <option value="erlang">Erlang</option>
+    </select>
+
+    <h4 id="matching-title"></h4>
+    <pre><code id="matching-expression"></code></pre>
+    <p id="matching-explanation"></p>
+
+    <button id="matching-prev">Previous</button>
+    <button id="matching-next">Next Step</button>
+</div>
+</section>
+
 
         <h2>Elixir vs. Erlang</h2>
         <p>Content will be added here.</p>
