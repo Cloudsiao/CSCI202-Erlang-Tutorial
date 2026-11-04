@@ -176,6 +176,80 @@
     without searching for additional solutions.
 </p>
 
+<h3>From Prolog to Erlang: WAM, JAM, and BEAM</h3>
+
+<p>
+    Erlang's implementation evolved from a Prolog-based
+    interpreter into a virtual machine designed for
+    concurrent and fault-tolerant applications.
+    The Warren Abstract Machine (WAM) influenced
+    the design of Joe's Abstract Machine (JAM),
+    which later gave way to BEAM.
+</p>
+
+<div class="runtime-timeline">
+
+    <div class="timeline-item">
+        <h4>WAM - Warren Abstract Machine</h4>
+        <p>
+            An abstract machine designed for Prolog.
+            It supports efficient unification and
+            backtracking during logical inference.
+        </p>
+    </div>
+
+    <div class="timeline-item">
+        <h4>1986 - Erlang's Prolog Interpreter</h4>
+        <p>
+            The first implementation of Erlang was
+            written in Prolog. It allowed developers
+            to experiment with language features,
+            but was too slow for practical applications.
+        </p>
+    </div>
+
+    <div class="timeline-item">
+        <h4>1989 - JAM (Joe's Abstract Machine)</h4>
+        <p>
+            JAM borrowed implementation ideas from
+            WAM but eliminated backtracking while
+            adding support for concurrent processes,
+            message passing, and failure detection.
+        </p>
+    </div>
+
+    <div class="timeline-item">
+        <h4>BEAM - Bogdan's Erlang Abstract Machine</h4>
+        <p>
+            BEAM provided a more efficient execution
+            system for Erlang. It was subsequently
+            improved and became the runtime
+            foundation of Erlang/OTP.
+        </p>
+    </div>
+
+</div>
+
+<p>
+    <strong>Key Takeaway:</strong>
+    Erlang retained elements of Prolog's syntax
+    and implementation techniques, but evolved
+    toward functional programming, concurrency,
+    message passing, and fault tolerance.
+</p>
+
+<p>
+    <strong>References:</strong>
+    <a href="https://www.erlang.org/blog/the-road-to-the-jit/"
+       target="_blank" rel="noopener noreferrer">
+        Erlang/OTP - The Road to the JIT
+    </a>
+    |
+    <a href="https://erlang.org/download/armstrong_thesis_2003.pdf"
+       target="_blank" rel="noopener noreferrer">
+        Armstrong (2003)
+    </a>
+</p>
 </section>
 
 
