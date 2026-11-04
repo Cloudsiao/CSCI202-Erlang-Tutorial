@@ -136,6 +136,46 @@
     <button id="matching-prev">Previous</button>
     <button id="matching-next">Next Step</button>
 </div>
+
+
+<h3>Backtracking vs. Function Clause Evaluation</h3>
+
+<p>
+    Prolog uses backtracking to explore alternative
+    solutions. Erlang checks function clauses in order
+    and executes the first matching clause.
+</p>
+
+<div class="backtracking-demo">
+    <h4>Interactive Execution Walkthrough</h4>
+
+    <label for="trace-language">Select language:</label>
+    <select id="trace-language">
+        <option value="prolog">Prolog - Backtracking</option>
+        <option value="erlang">Erlang - Clause Selection</option>
+    </select>
+
+    <h4>Program</h4>
+    <pre><code id="trace-program"></code></pre>
+
+    <p id="trace-progress"></p>
+    <h4 id="trace-title"></h4>
+
+    <pre><code id="trace-code"></code></pre>
+    <p id="trace-explanation"></p>
+
+    <button id="trace-prev">Previous</button>
+    <button id="trace-next">Next Step</button>
+</div>
+
+<p>
+    <strong>Key Difference:</strong>
+    Prolog can undo variable bindings and revisit
+    alternative clauses through backtracking.
+    Erlang selects the first matching function clause
+    without searching for additional solutions.
+</p>
+
 </section>
 
 
