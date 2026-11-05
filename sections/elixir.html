@@ -20,197 +20,545 @@
             Back to Comparative Analysis
         </a>
 
-        
-<section id="elixir">
+        <section id="elixir">
 
-    <h2>Introduction to Elixir</h2>
+            <h2>Introduction to Elixir</h2>
 
-    <p>
-        Elixir is a functional programming language
-        created by José Valim. Although it is a
-        separate language from Erlang, Elixir runs
-        on the same BEAM virtual machine and uses
-        the Erlang/OTP ecosystem.
-    </p>
+            <p>
+                Elixir is a functional programming language
+                created by José Valim. Although Elixir is a
+                separate language from Erlang, both run on
+                the same BEAM virtual machine and use the
+                Erlang/OTP ecosystem.
+            </p>
 
-    <p>
-        Elixir was designed around three main goals:
-        compatibility, productivity, and extensibility.
-        It builds upon Erlang's existing runtime while
-        providing additional language features and
-        developer tools.
-    </p>
+            <p>
+                Elixir was designed around three main goals:
+                compatibility, productivity, and extensibility.
+                It builds upon Erlang's existing runtime while
+                introducing additional language abstractions
+                and developer tools.
+            </p>
 
-    <h2>1. Compatibility with Erlang</h2>
+            <!-- COMPATIBILITY -->
 
-    <p>
-        Erlang and Elixir run on BEAM and can use
-        the same Erlang/OTP libraries. This means
-        Elixir programs can call Erlang functions
-        directly without requiring a separate
-        runtime or conversion layer.
-    </p>
+            <h2>1. Compatibility with Erlang</h2>
 
-    <h3>Example: Calling the Same Erlang Function</h3>
+            <p>
+                Erlang and Elixir execute on BEAM and can
+                use the same Erlang/OTP libraries. Both
+                languages support lightweight processes,
+                asynchronous message passing, and
+                supervision mechanisms.
+            </p>
 
-    <h4>Erlang</h4>
-    <pre><code>lists:reverse([1,2,3]).</code></pre>
+            <p>
+                Elixir can call Erlang functions directly
+                without requiring a separate runtime.
+            </p>
 
-    <p>Result:</p>
-    <pre><code>[3,2,1]</code></pre>
+            <h3>Example: Calling an Erlang Function</h3>
 
-    <h4>Elixir</h4>
-    <pre><code>:lists.reverse([1,2,3])</code></pre>
+            <h4>Erlang</h4>
 
-    <p>Result:</p>
-    <pre><code>[3,2,1]</code></pre>
+            <pre><code>lists:reverse([1,2,3]).</code></pre>
 
-    <p>
-        <strong>Explanation:</strong>
-        Both examples call the same Erlang
-        <code>lists:reverse</code> function.
-        Erlang uses the module:function syntax,
-        while Elixir uses the
-        <code>:module.function</code> syntax.
-    </p>
+            <p>Result:</p>
+            <pre><code>[3,2,1]</code></pre>
 
-    <p>
-        <strong>Key Takeaway:</strong>
-        Elixir does not replace Erlang's runtime.
-        Both languages can use the same BEAM
-        infrastructure, including lightweight
-        processes, message passing, and OTP
-        supervision mechanisms.
-    </p>
+            <h4>Elixir</h4>
 
-    <h3>References</h3>
+            <pre><code>:lists.reverse([1,2,3])</code></pre>
 
-    <p>
-        <a href="https://elixir-lang.org/blog/2013/08/08/elixir-design-goals/"
-           target="_blank" rel="noopener noreferrer">
-            José Valim (2013) - Elixir Design Goals
-        </a>
-    </p>
+            <p>Result:</p>
+            <pre><code>[3,2,1]</code></pre>
 
-        
-    <h2>2. Productivity Through Macros</h2>
+            <p>
+                <strong>Explanation:</strong>
+                Both examples call the same Erlang
+                lists:reverse function. Erlang uses
+                module:function syntax, while Elixir
+                uses :module.function syntax.
+            </p>
 
-    <p>
-        One of Elixir's design goals is productivity.
-        Elixir uses a relatively small language core,
-        implementing many convenient programming constructs
-        through macros instead of hardcoding them into
-        the compiler.
-    </p>
+            <p>
+                <strong>Key Takeaway:</strong>
+                Elixir does not replace Erlang's runtime.
+                Both languages share BEAM processes,
+                message passing, and OTP mechanisms.
+            </p>
 
-    <p>
-        A macro is a mechanism that generates or
-        transforms code during compilation. This allows
-        developers to create new language abstractions
-        without modifying the compiler itself.
-    </p>
+            <!-- PRODUCTIVITY -->
 
-    <h3>Example 1: Using the unless Macro</h3>
+            <h2>2. Productivity Through Macros</h2>
 
-    <p>
-        Elixir provides the unless macro, which executes
-        a block of code when a condition is false.
-    </p>
+            <p>
+                Elixir uses a relatively small language
+                core, implementing many convenient
+                programming constructs as macros
+                instead of hardcoding them into
+                the compiler.
+            </p>
 
-    <pre><code>temperature = 25
+            <p>
+                A macro generates or transforms code
+                during compilation. This allows developers
+                to create new programming abstractions
+                without modifying the compiler.
+            </p>
 
-    unless temperature &gt; 30 do
-        IO.puts("Not too hot")
-    end</code></pre>
+            <h3>Example 1: Using the unless Macro</h3>
 
-    <p>Output:</p>
+            <p>
+                The unless macro executes a block of
+                code when its condition is false or nil.
+            </p>
 
-    <pre><code>Not too hot</code></pre>
+            <pre><code>temperature = 25
 
-    <p>
-        The example above is equivalent to writing:
-    </p>
+unless temperature &gt; 30 do
+    IO.puts("Not too hot")
+end</code></pre>
 
-    <pre><code>if not (temperature &gt; 30) do
-        IO.puts("Not too hot")
-    end</code></pre>
+            <p>Output:</p>
 
-    <p>
-        Instead of requiring a separate compiler-level
-        conditional construct, Elixir implements unless
-        as a macro using existing language mechanisms.
-    </p>
+            <pre><code>Not too hot</code></pre>
 
-    <h3>Example 2: Creating a Custom Macro</h3>
+            <p>
+                The example is equivalent to:
+            </p>
 
-    <p>
-        Developers can also create their own macros.
-        The following example defines my_unless,
-        which behaves similarly to Elixir's built-in
-        unless macro.
-    </p>
+            <pre><code>if not (temperature &gt; 30) do
+    IO.puts("Not too hot")
+end</code></pre>
 
-    <pre><code>defmodule MyMacros do
-        defmacro my_unless(condition, do: block) do
-            quote do
-                if not unquote(condition) do
-                    unquote(block)
-                end
+            <p>
+                The unless construct is implemented
+                as a macro using existing Elixir
+                language mechanisms.
+            </p>
+
+            <h3>Example 2: Creating a Custom Macro</h3>
+
+            <p>
+                Developers can also define their own
+                macros. The following example creates
+                a custom conditional construct called
+                my_unless.
+            </p>
+
+            <pre><code>defmodule MyMacros do
+    defmacro my_unless(condition, do: block) do
+        quote do
+            if not unquote(condition) do
+                unquote(block)
             end
         end
     end
+end
 
-    require MyMacros
+require MyMacros
 
-    temperature = 25
+temperature = 25
 
-    MyMacros.my_unless temperature &gt; 30 do
-        IO.puts("Not too hot")
-    end</code></pre>
+MyMacros.my_unless temperature &gt; 30 do
+    IO.puts("Not too hot")
+end</code></pre>
 
-    <p>Output:</p>
+            <p>Output:</p>
 
-    <pre><code>Not too hot</code></pre>
+            <pre><code>Not too hot</code></pre>
 
-    <h3>How Does This Macro Work?</h3>
+            <h3>How Does the Macro Work?</h3>
 
-    <ol>
-        <li>
-            <code>defmacro</code> defines a custom macro.
-        </li>
-        <li>
-            <code>quote</code> constructs the code
-            that the macro will generate.
-        </li>
-        <li>
-            <code>unquote</code> inserts the supplied
-            condition and block into that code.
-        </li>
-        <li>
-            During compilation, the macro expands
-            into an equivalent conditional expression.
-        </li>
-    </ol>
+            <ol>
+                <li>
+                    <code>defmacro</code> defines
+                    a custom macro.
+                </li>
+                <li>
+                    <code>quote</code> constructs
+                    the code to be generated.
+                </li>
+                <li>
+                    <code>unquote</code> inserts the
+                    supplied expressions into
+                    the generated code.
+                </li>
+                <li>
+                    During compilation, the macro
+                    expands into a conditional
+                    expression.
+                </li>
+            </ol>
 
-    <p>
-        <strong>Key Difference:</strong>
-        Elixir emphasizes productivity through its
-        macro system, allowing developers to create
-        reusable language abstractions without changing
-        the compiler. However, fundamental special forms
-        such as case cannot be overridden.
-    </p>
+            <p>
+                <strong>Key Takeaway:</strong>
+                Elixir's macro system allows developers
+                to define reusable language constructs
+                without changing the compiler.
+                Fundamental special forms such as
+                case cannot be overridden.
+            </p>
 
-    <p>
-        <strong>References:</strong>
-        <a href="https://hexdocs.pm/elixir/macros.html"
-           target="_blank" rel="noopener noreferrer">
-            Elixir - Macros
-        </a>
-    </p>
+            <!-- EXTENSIBILITY -->
 
-</section>
+            <h2>3. Extensibility Through Protocols</h2>
 
+            <p>
+                Elixir's third design goal is extensibility.
+                Protocols allow developers to extend
+                existing operations to additional data
+                types without modifying the original
+                library.
+            </p>
+
+            <p>
+                A protocol is not simply a built-in
+                function. It defines a set of functions
+                that implementations must provide
+                for supported data types.
+            </p>
+
+            <h3>Understanding Protocols</h3>
+
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Concept</th>
+                        <th>Meaning</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Protocol</td>
+                        <td>
+                            Defines a common set
+                            of operations.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Implementation</td>
+                        <td>
+                            Specifies how those
+                            operations work for
+                            a particular data type.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Function Call</td>
+                        <td>
+                            Invokes the appropriate
+                            behavior for the data.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Example 1: Enumerable Protocol</h3>
+
+            <p>
+                The Enum module provides functions
+                for processing collections.
+                Collections implementing the
+                Enumerable protocol can use
+                these operations.
+            </p>
+
+            <h4>Using a List</h4>
+
+            <pre><code>Enum.map([1, 2, 3], fn x -&gt; x * 2 end)</code></pre>
+
+            <p>Result:</p>
+            <pre><code>[2, 4, 6]</code></pre>
+
+            <h4>Using a Range</h4>
+
+            <pre><code>Enum.map(1..3, fn x -&gt; x * 2 end)</code></pre>
+
+            <p>Result:</p>
+            <pre><code>[2, 4, 6]</code></pre>
+
+            <p>
+                Both lists and ranges implement the
+                Enumerable protocol. Therefore,
+                Enum.map can operate on either type
+                using the same interface.
+            </p>
+
+            <h3>Example 2: Custom Enumerable Type</h3>
+
+            <p>
+                Developers can implement Enumerable
+                for their own data structures.
+                The following NumberBox structure
+                stores a list of items.
+            </p>
+
+            <pre><code>defmodule NumberBox do
+    defstruct items: []
+end
+
+defimpl Enumerable, for: NumberBox do
+
+    def count(box) do
+        {:ok, length(box.items)}
+    end
+
+    def member?(box, value) do
+        {:ok, value in box.items}
+    end
+
+    def slice(_box) do
+        {:error, __MODULE__}
+    end
+
+    def reduce(box, acc, fun) do
+        Enumerable.List.reduce(
+            box.items, acc, fun
+        )
+    end
+end
+
+box = struct(NumberBox, items: [1, 2, 3])
+
+Enum.map(box, fn x -&gt; x * 2 end)</code></pre>
+
+            <p>Result:</p>
+
+            <pre><code>[2, 4, 6]</code></pre>
+
+            <p>
+                <strong>Explanation:</strong>
+                NumberBox is a custom structure.
+                By implementing Enumerable,
+                NumberBox can use the existing
+                Enum.map function.
+            </p>
+
+            <p>
+                The Enum module does not need
+                to be modified to support
+                the new data type.
+            </p>
+
+            <h3>Example 3: String.Chars Protocol</h3>
+
+            <p>
+                Protocols are not limited to
+                collections. Another example
+                is String.Chars, which defines
+                how different data types can
+                be converted into strings.
+            </p>
+
+            <h4>Integer</h4>
+
+            <pre><code>to_string(123)</code></pre>
+
+            <p>Result:</p>
+            <pre><code>"123"</code></pre>
+
+            <h4>Float</h4>
+
+            <pre><code>to_string(3.14)</code></pre>
+
+            <p>Result:</p>
+            <pre><code>"3.14"</code></pre>
+
+            <h4>Atom</h4>
+
+            <pre><code>to_string(:hello)</code></pre>
+
+            <p>Result:</p>
+            <pre><code>"hello"</code></pre>
+
+            <p>
+                Although integers, floats, and atoms
+                are different types, each implements
+                String.Chars. Therefore, the same
+                function can convert them into strings.
+            </p>
+
+            <h3>Example 4: Custom String Conversion</h3>
+
+            <p>
+                Suppose a developer creates a Person
+                structure. By default, this structure
+                does not have a String.Chars
+                implementation.
+            </p>
+
+            <pre><code>defmodule Person do
+    defstruct name: ""
+end</code></pre>
+
+            <p>
+                We can implement String.Chars
+                for this custom structure:
+            </p>
+
+            <pre><code>defimpl String.Chars, for: Person do
+    def to_string(person) do
+        person.name
+    end
+end</code></pre>
+
+            <p>
+                Now the existing to_string
+                function can handle Person:
+            </p>
+
+            <pre><code>person = struct(Person, name: "John")
+
+to_string(person)</code></pre>
+
+            <p>Result:</p>
+
+            <pre><code>"John"</code></pre>
+
+            <p>
+                <strong>Explanation:</strong>
+                String.Chars defines the conversion
+                behavior, while the Person implementation
+                specifies how that conversion works.
+                The existing to_string function uses
+                the appropriate implementation.
+            </p>
+
+            <p>
+                <strong>Key Takeaway:</strong>
+                Protocols let developers extend
+                existing operations to custom
+                data types without modifying
+                the original library.
+            </p>
+
+            <!-- FINAL COMPARISON -->
+
+            <h2>4. Summary: Erlang vs. Elixir</h2>
+
+            <p>
+                Erlang and Elixir share the same
+                BEAM runtime and Erlang/OTP ecosystem.
+                However, Elixir introduces additional
+                language abstractions and tools that
+                emphasize productivity and extensibility.
+            </p>
+
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Erlang</th>
+                        <th>Elixir</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Runtime</td>
+                        <td>BEAM</td>
+                        <td>BEAM</td>
+                    </tr>
+
+                    <tr>
+                        <td>Concurrency</td>
+                        <td>BEAM processes</td>
+                        <td>BEAM processes</td>
+                    </tr>
+
+                    <tr>
+                        <td>Fault Tolerance</td>
+                        <td>OTP supervision</td>
+                        <td>OTP supervision</td>
+                    </tr>
+
+                    <tr>
+                        <td>Macros</td>
+                        <td>Preprocessor macros</td>
+                        <td>AST-based macros</td>
+                    </tr>
+
+                    <tr>
+                        <td>Extensibility</td>
+                        <td>Modules and behaviours</td>
+                        <td>
+                            Modules, macros,
+                            and protocols
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>
+                <strong>Overall Conclusion:</strong>
+                Elixir is a separate programming
+                language built on Erlang's established
+                runtime. Its main contributions are
+                additional abstractions, development
+                tools, and extensible APIs rather
+                than a different concurrency model.
+            </p>
+
+            <!-- REFERENCES -->
+
+            <h2>References</h2>
+
+            <ul>
+                <li>
+                    <a href="https://elixir-lang.org/blog/2013/08/08/elixir-design-goals/"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        José Valim (2013) -
+                        Elixir Design Goals
+                    </a>
+                </li>
+
+                <li>
+                    <a href="https://hexdocs.pm/elixir/macros.html"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Elixir Documentation -
+                        Macros
+                    </a>
+                </li>
+
+                <li>
+                    <a href="https://hexdocs.pm/elixir/Enumerable.html"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Elixir Documentation -
+                        Enumerable
+                    </a>
+                </li>
+
+                <li>
+                    <a href="https://hexdocs.pm/elixir/Protocol.html"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Elixir Documentation -
+                        Protocol
+                    </a>
+                </li>
+
+                <li>
+                    <a href="https://hexdocs.pm/elixir/String.Chars.html"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Elixir Documentation -
+                        String.Chars
+                    </a>
+                </li>
+            </ul>
+
+        </section>
+
+        <p>
+            <a href="comparative-analysis.html">
+                Back to Comparative Analysis
+            </a>
+        </p>
     </main>
 
     <script src="../script.js"></script>
