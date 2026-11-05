@@ -20,16 +20,80 @@
             Back to Comparative Analysis
         </a>
 
-        <section>
-            <h2>Introduction</h2>
-            <p>
-                Elixir is a separate programming language
-                that runs on the same BEAM virtual machine
-                as Erlang.
-            </p>
+        
+<section id="elixir">
 
-            <!-- More tutorial content goes here -->
-        </section>
+    <h2>Introduction to Elixir</h2>
+
+    <p>
+        Elixir is a functional programming language
+        created by José Valim. Although it is a
+        separate language from Erlang, Elixir runs
+        on the same BEAM virtual machine and uses
+        the Erlang/OTP ecosystem.
+    </p>
+
+    <p>
+        Elixir was designed around three main goals:
+        compatibility, productivity, and extensibility.
+        It builds upon Erlang's existing runtime while
+        providing additional language features and
+        developer tools.
+    </p>
+
+    <h2>1. Compatibility with Erlang</h2>
+
+    <p>
+        Erlang and Elixir run on BEAM and can use
+        the same Erlang/OTP libraries. This means
+        Elixir programs can call Erlang functions
+        directly without requiring a separate
+        runtime or conversion layer.
+    </p>
+
+    <h3>Example: Calling the Same Erlang Function</h3>
+
+    <h4>Erlang</h4>
+    <pre><code>lists:reverse([1,2,3]).</code></pre>
+
+    <p>Result:</p>
+    <pre><code>[3,2,1]</code></pre>
+
+    <h4>Elixir</h4>
+    <pre><code>:lists.reverse([1,2,3])</code></pre>
+
+    <p>Result:</p>
+    <pre><code>[3,2,1]</code></pre>
+
+    <p>
+        <strong>Explanation:</strong>
+        Both examples call the same Erlang
+        <code>lists:reverse</code> function.
+        Erlang uses the module:function syntax,
+        while Elixir uses the
+        <code>:module.function</code> syntax.
+    </p>
+
+    <p>
+        <strong>Key Takeaway:</strong>
+        Elixir does not replace Erlang's runtime.
+        Both languages can use the same BEAM
+        infrastructure, including lightweight
+        processes, message passing, and OTP
+        supervision mechanisms.
+    </p>
+
+    <h3>References</h3>
+
+    <p>
+        <a href="https://elixir-lang.org/blog/2013/08/08/elixir-design-goals/"
+           target="_blank" rel="noopener noreferrer">
+            José Valim (2013) - Elixir Design Goals
+        </a>
+    </p>
+
+</section>
+
     </main>
 
     <script src="../script.js"></script>
