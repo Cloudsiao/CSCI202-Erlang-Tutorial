@@ -92,6 +92,123 @@
         </a>
     </p>
 
+        
+    <h2>2. Productivity Through Macros</h2>
+
+    <p>
+        One of Elixir's design goals is productivity.
+        Elixir uses a relatively small language core,
+        implementing many convenient programming constructs
+        through macros instead of hardcoding them into
+        the compiler.
+    </p>
+
+    <p>
+        A macro is a mechanism that generates or
+        transforms code during compilation. This allows
+        developers to create new language abstractions
+        without modifying the compiler itself.
+    </p>
+
+    <h3>Example 1: Using the unless Macro</h3>
+
+    <p>
+        Elixir provides the unless macro, which executes
+        a block of code when a condition is false.
+    </p>
+
+    <pre><code>temperature = 25
+
+    unless temperature &gt; 30 do
+        IO.puts("Not too hot")
+    end</code></pre>
+
+    <p>Output:</p>
+
+    <pre><code>Not too hot</code></pre>
+
+    <p>
+        The example above is equivalent to writing:
+    </p>
+
+    <pre><code>if not (temperature &gt; 30) do
+        IO.puts("Not too hot")
+    end</code></pre>
+
+    <p>
+        Instead of requiring a separate compiler-level
+        conditional construct, Elixir implements unless
+        as a macro using existing language mechanisms.
+    </p>
+
+    <h3>Example 2: Creating a Custom Macro</h3>
+
+    <p>
+        Developers can also create their own macros.
+        The following example defines my_unless,
+        which behaves similarly to Elixir's built-in
+        unless macro.
+    </p>
+
+    <pre><code>defmodule MyMacros do
+        defmacro my_unless(condition, do: block) do
+            quote do
+                if not unquote(condition) do
+                    unquote(block)
+                end
+            end
+        end
+    end
+
+    require MyMacros
+
+    temperature = 25
+
+    MyMacros.my_unless temperature &gt; 30 do
+        IO.puts("Not too hot")
+    end</code></pre>
+
+    <p>Output:</p>
+
+    <pre><code>Not too hot</code></pre>
+
+    <h3>How Does This Macro Work?</h3>
+
+    <ol>
+        <li>
+            <code>defmacro</code> defines a custom macro.
+        </li>
+        <li>
+            <code>quote</code> constructs the code
+            that the macro will generate.
+        </li>
+        <li>
+            <code>unquote</code> inserts the supplied
+            condition and block into that code.
+        </li>
+        <li>
+            During compilation, the macro expands
+            into an equivalent conditional expression.
+        </li>
+    </ol>
+
+    <p>
+        <strong>Key Difference:</strong>
+        Elixir emphasizes productivity through its
+        macro system, allowing developers to create
+        reusable language abstractions without changing
+        the compiler. However, fundamental special forms
+        such as case cannot be overridden.
+    </p>
+
+    <p>
+        <strong>References:</strong>
+        <a href="https://hexdocs.pm/elixir/macros.html"
+           target="_blank" rel="noopener noreferrer">
+            Elixir - Macros
+        </a>
+    </p>
+
 </section>
 
     </main>
