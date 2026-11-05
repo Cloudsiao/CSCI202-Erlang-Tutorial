@@ -8,6 +8,7 @@
     <title>Comparative Analysis - Erlang</title>
     <link rel="stylesheet" href="../style.css">
 </head>
+
 <body>
     <header>
         <h1>Comparative Analysis</h1>
@@ -17,245 +18,53 @@
     <main>
         <a href="../index.html">Back to Home</a>
 
-        
-<section id="prolog">
-    <h2>Prolog vs. Erlang</h2>
+        <h2>Explore the Comparisons</h2>
 
-    <h3>Features Inherited from Prolog</h3>
-
-    <p>
-        Erlang was originally developed using Prolog,
-        and several Prolog features were retained in
-        Erlang's syntax and programming conventions.
-        These include atoms, variable naming conventions,
-        dynamic typing, recursion, clause-based definitions,
-        and list notation.
-    </p>
-
-    <table border="1" cellpadding="10">
-        <thead>
-            <tr>
-                <th>Feature</th>
-                <th>Prolog</th>
-                <th>Erlang</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Atoms</td>
-                <td><code>john</code></td>
-                <td><code>john</code></td>
-            </tr>
-            <tr>
-                <td>Variables</td>
-                <td><code>X</code></td>
-                <td><code>X</code></td>
-            </tr>
-            <tr>
-                <td>Dynamic Typing</td>
-                <td>No fixed variable type declarations</td>
-                <td>No fixed variable type declarations</td>
-            </tr>
-            <tr>
-                <td>Lists</td>
-                <td><code>[1,2,3]</code></td>
-                <td><code>[1,2,3]</code></td>
-            </tr>
-            <tr>
-                <td>Head-Tail Notation</td>
-                <td><code>[H|T]</code></td>
-                <td><code>[H|T]</code></td>
-            </tr>
-            <tr>
-                <td>Clauses</td>
-                <td>Predicate clauses</td>
-                <td>Function clauses</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h3>Example: Head-Tail List Notation</h3>
-
-    <p>
-        Both Prolog and Erlang use [H|T] notation.
-        H represents the first element (head), while
-        T represents the remaining elements (tail).
-        The underscore (_) means the remaining
-        elements are ignored in these examples.
-    </p>
-
-    <h4>Prolog - Predicate</h4>
-    <pre><code>first([H|_], H).</code></pre>
-
-    <p>Query:</p>
-    <pre><code>?- first([10,20,30], X).</code></pre>
-
-    <p>Result:</p>
-    <pre><code>X = 10</code></pre>
-
-    <h4>Erlang - Function</h4>
-    <pre><code>first([H|_]) -> H.</code></pre>
-
-    <p>Function call:</p>
-    <pre><code>first([10,20,30]).</code></pre>
-
-    <p>Result:</p>
-    <pre><code>10</code></pre>
-
-    <p>
-        <strong>Key Difference:</strong>
-        Prolog uses unification to bind X to 10,
-        while Erlang matches the list and returns
-        the value of H directly.
-    </p>
-
-    
-<h3>Unification vs. Pattern Matching</h3>
-
-<p>
-    Prolog uses two-way unification, which attempts
-    to make two terms identical by binding variables
-    on either side. Erlang instead uses one-way
-    pattern matching, where a left-hand pattern
-    is matched against a right-hand value.
-</p>
-
-<div class="matching-demo">
-    <h4>Step-by-Step Matching</h4>
-
-    <label for="language-choice">Language:</label>
-    <select id="language-choice">
-        <option value="prolog">Prolog</option>
-        <option value="erlang">Erlang</option>
-    </select>
-
-    <h4 id="matching-title"></h4>
-    <pre><code id="matching-expression"></code></pre>
-    <p id="matching-explanation"></p>
-
-    <button id="matching-prev">Previous</button>
-    <button id="matching-next">Next Step</button>
-</div>
-
-
-<h3>Backtracking vs. Function Clause Evaluation</h3>
-
-<p>
-    Prolog uses backtracking to explore alternative
-    solutions. Erlang checks function clauses in order
-    and executes the first matching clause.
-</p>
-
-<div class="backtracking-demo">
-    <h4>Interactive Execution Walkthrough</h4>
-
-    <label for="trace-language">Select language:</label>
-    <select id="trace-language">
-        <option value="prolog">Prolog - Backtracking</option>
-        <option value="erlang">Erlang - Clause Selection</option>
-    </select>
-
-    <h4>Program</h4>
-    <pre><code id="trace-program"></code></pre>
-
-    <p id="trace-progress"></p>
-    <h4 id="trace-title"></h4>
-
-    <pre><code id="trace-code"></code></pre>
-    <p id="trace-explanation"></p>
-
-    <button id="trace-prev">Previous</button>
-    <button id="trace-next">Next Step</button>
-</div>
-
-<p>
-    <strong>Key Difference:</strong>
-    Prolog can undo variable bindings and revisit
-    alternative clauses through backtracking.
-    Erlang selects the first matching function clause
-    without searching for additional solutions.
-</p>
-
-<h3>From Prolog to Erlang: WAM, JAM, and BEAM</h3>
-
-<p>
-    Erlang's implementation evolved from a Prolog-based
-    interpreter into a virtual machine designed for
-    concurrent and fault-tolerant applications.
-    The Warren Abstract Machine (WAM) influenced
-    the design of Joe's Abstract Machine (JAM),
-    which later gave way to BEAM.
-</p>
-
-<div class="runtime-timeline">
-
-    <div class="timeline-item">
-        <h4>WAM - Warren Abstract Machine</h4>
         <p>
-            An abstract machine designed for Prolog.
-            It supports efficient unification and
-            backtracking during logical inference.
+            Explore how Erlang compares with other
+            programming languages and technologies
+            in syntax, concurrency, execution models,
+            and fault tolerance.
         </p>
-    </div>
 
-    <div class="timeline-item">
-        <h4>1986 - Erlang's Prolog Interpreter</h4>
-        <p>
-            The first implementation of Erlang was
-            written in Prolog. It allowed developers
-            to experiment with language features,
-            but was too slow for practical applications.
-        </p>
-    </div>
+        <section>
+            <h2>Prolog vs. Erlang</h2>
+            <p>
+                Explore Erlang's Prolog origins,
+                unification, pattern matching,
+                backtracking, and runtime evolution.
+            </p>
+            <a href="prolog.html">Read Prolog Tutorial</a>
+        </section>
 
-    <div class="timeline-item">
-        <h4>1989 - JAM (Joe's Abstract Machine)</h4>
-        <p>
-            JAM borrowed implementation ideas from
-            WAM but eliminated backtracking while
-            adding support for concurrent processes,
-            message passing, and failure detection.
-        </p>
-    </div>
+        <section>
+            <h2>Elixir vs. Erlang</h2>
+            <p>
+                Learn about their shared BEAM runtime,
+                compatibility, productivity,
+                macros, and extensibility.
+            </p>
+            <a href="elixir.html">Read Elixir Tutorial</a>
+        </section>
 
-    <div class="timeline-item">
-        <h4>BEAM - Bogdan's Erlang Abstract Machine</h4>
-        <p>
-            BEAM provided a more efficient execution
-            system for Erlang. It was subsequently
-            improved and became the runtime
-            foundation of Erlang/OTP.
-        </p>
-    </div>
+        <section>
+            <h2>Akka/Scala vs. Erlang</h2>
+            <p>
+                Compare actor-based concurrency
+                and supervision on BEAM and JVM.
+            </p>
+            <a href="akka-scala.html">Read Akka Tutorial</a>
+        </section>
 
-</div>
-
-<p>
-    <strong>Key Takeaway:</strong>
-    Erlang retained elements of Prolog's syntax
-    and implementation techniques, but evolved
-    toward functional programming, concurrency,
-    message passing, and fault tolerance.
-</p>
-
-<p>
-    <strong>References:</strong>
-    <a href="https://www.erlang.org/blog/the-road-to-the-jit/"
-       target="_blank" rel="noopener noreferrer">
-        Erlang/OTP - The Road to the JIT
-    </a>
-    |
-    <a href="https://erlang.org/download/armstrong_thesis_2003.pdf"
-       target="_blank" rel="noopener noreferrer">
-        Armstrong (2003)
-    </a>
-</p>
-</section>
-
-
-
+        <section>
+            <h2>Pony vs. Erlang</h2>
+            <p>
+                Learn about reference capabilities,
+                data sharing, and concurrency safety.
+            </p>
+            <a href="pony.html">Read Pony Tutorial</a>
+        </section>
     </main>
-
-    <script src="../script.js"></script>
 </body>
 </html>
+
