@@ -26,23 +26,22 @@
 
             <p>
                 Scala is a statically typed programming
-                language that combines functional and
+                language combining functional and
                 object-oriented programming.
             </p>
 
             <p>
-                Akka is a framework for building
+                Akka is a framework for developing
                 concurrent and distributed applications
                 using Scala and Java. It provides
-                actor-based programming features
-                while running on the Java Virtual
-                Machine (JVM).
+                actor-based programming while running
+                on the Java Virtual Machine (JVM).
             </p>
 
             <p>
-                Similar to Erlang, Akka uses the actor
-                model, where actors maintain their own
-                state and communicate through
+                Similar to Erlang, Akka follows the
+                actor model, where actors maintain
+                private state and communicate through
                 asynchronous message passing.
             </p>
 
@@ -90,26 +89,25 @@
             <p>
                 Both Erlang and Akka support actor-based
                 concurrency. Each actor has its own
-                logical state and mailbox, and processes
-                incoming messages one at a time.
+                logical state and mailbox, and handles
+                incoming messages sequentially.
                 Different actors can execute concurrently.
             </p>
 
             <p>
                 In Erlang, actors are implemented as
-                lightweight BEAM processes. In Akka,
-                actors are managed by the Akka framework,
-                which schedules their execution using
-                the JVM's underlying threads.
+                lightweight BEAM processes with isolated
+                memory. Akka actors are managed by the
+                framework and scheduled using JVM threads.
             </p>
 
             <h3>Example: Sending a Message</h3>
 
             <h4>Erlang</h4>
 
-            <pre><code>Worker = spawn(fun() ->
+            <pre><code>Worker = spawn(fun() -&gt;
     receive
-        hello ->
+        hello -&gt;
             io:format("Hello from Erlang!~n")
     end
 end),
@@ -117,13 +115,15 @@ end),
 Worker ! hello.</code></pre>
 
             <p>Output:</p>
+
             <pre><code>Hello from Erlang!</code></pre>
 
             <p>
-                The spawn function creates a lightweight
-                process. The ! operator sends a message
-                to that process, and receive handles
-                the incoming message.
+                The <code>spawn</code> function creates
+                a lightweight process.
+                The <code>!</code> operator sends
+                a message, while <code>receive</code>
+                handles incoming messages.
             </p>
 
             <h4>Scala with Akka Typed</h4>
@@ -132,8 +132,11 @@ Worker ! hello.</code></pre>
 import akka.actor.typed.scaladsl.Behaviors
 
 val worker = Behaviors.receiveMessage[String] {
-    case "hello" =>
+    case "hello" =&gt;
         println("Hello from Akka!")
+        Behaviors.same
+
+    case _ =&gt;
         Behaviors.same
 }
 
@@ -142,33 +145,241 @@ val system = ActorSystem(worker, "WorkerSystem")
 system ! "hello"</code></pre>
 
             <p>Output:</p>
+
             <pre><code>Hello from Akka!</code></pre>
 
             <p>
-                ActorSystem creates the actor system
-                with the specified behavior.
-                The ! operator sends a message
-                to the actor. The behavior handles
-                the message and returns Behaviors.same
-                to continue using the same behavior.
+                ActorSystem starts an actor system
+                with the specified guardian behavior.
+                The <code>!</code> operator sends
+                an asynchronous message.
+                The actor processes the message and
+                returns <code>Behaviors.same</code>
+                to continue using its current behavior.
             </p>
 
             <p>
                 <strong>Key Difference:</strong>
                 Erlang provides lightweight processes
-                directly through BEAM. Akka provides
-                actor-based concurrency as a framework
-                that runs on the JVM.
+                directly through BEAM, whereas Akka
+                provides actor-based concurrency as
+                a JVM framework.
+            </p>
+
+            <h2>3. Fault Tolerance and Supervision</h2>
+
+            <p>
+                Erlang/OTP and Akka both support
+                fault tolerance through supervision.
+                Instead of requiring every actor
+                to recover from unexpected errors
+                independently, supervision provides
+                strategies for handling failures.
+            </p>
+
+            <h3>How Does Supervision Differ?</h3>
+
+            <p>
+                <strong>Erlang/OTP:</strong>
+                Dedicated supervisor processes
+                manage child processes and apply
+                configured restart strategies.
+            </p>
+
+            <p>
+                <strong>Akka:</strong>
+                Actors are organized in parent-child
+                hierarchies. Supervision is integrated
+                into actor behaviors and the framework's
+                actor lifecycle.
+            </p>
+
+            <h3>Erlang/OTP Restart Strategies</h3>
+
+            <ul>
+                <li>
+                    <strong>one_for_one:</strong>
+                    Restart only the failed child.
+                </li>
+                <li>
+                    <strong>one_for_all:</strong>
+                    Restart all children when one fails.
+                </li>
+                <li>
+                    <strong>rest_for_one:</strong>
+                    Restart the failed child and
+                    children started after it.
+                </li>
+            </ul>
+
+            <h3>Akka Typed Supervision Strategies</h3>
+
+            <ul>
+                <li>
+                    <strong>Stop:</strong>
+                    Terminate the failed actor.
+                </li>
+                <li>
+                    <strong>Restart:</strong>
+                    Reinitialize the failed actor's
+                    behavior.
+                </li>
+                <li>
+                    <strong>Resume:</strong>
+                    Continue processing messages
+                    without restarting the behavior.
+                </li>
+            </ul>
+
+            <p>
+                Akka Typed stops an actor by default
+                when an unexpected exception occurs
+                without a configured supervision
+                strategy. Akka Classic generally
+                restarts actors for ordinary
+                unhandled exceptions.
+            </p>
+
+            <h2>4. Interactive Supervision Demonstration</h2>
+
+            <p>
+                Select a system and failure-handling
+                strategy, then simulate the failure
+                of Worker B to observe which workers
+                are affected.
+            </p>
+
+            <div class="supervision-demo">
+
+                <label for="supervision-system">
+                    Choose system:
+                </label>
+
+                <select id="supervision-system">
+                    <option value="erlang">
+                        Erlang/OTP
+                    </option>
+                    <option value="akka">
+                        Akka Typed
+                    </option>
+                </select>
+
+                <h3 id="supervisor-label"></h3>
+
+                <p>Parent / Supervisor:</p>
+
+                <pre><code id="supervision-workers"></code></pre>
+
+                <label for="supervision-strategy">
+                    Failure-handling strategy:
+                </label>
+
+                <select id="supervision-strategy"></select>
+
+                <p id="supervision-explanation"></p>
+
+                <button id="supervision-fail">
+                    Simulate Worker B Failure
+                </button>
+
+                <button id="supervision-reset">
+                    Reset
+                </button>
+
+                <h3>Execution Result</h3>
+
+                <pre><code id="supervision-result"></code></pre>
+
+            </div>
+
+            <p>
+                <strong>Important:</strong>
+                This is a conceptual simulation
+                illustrating supervision behavior.
+                It does not execute actual Erlang
+                or Akka code.
+            </p>
+
+            <p>
+                For Erlang, the simulation assumes
+                three restartable child processes
+                started in the order A, B, C.
+                For Akka, it assumes child B has
+                the selected supervision strategy.
+            </p>
+
+            <h2>5. Summary: Erlang vs. Akka/Scala</h2>
+
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Erlang</th>
+                        <th>Akka/Scala</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Execution Runtime</td>
+                        <td>BEAM</td>
+                        <td>JVM</td>
+                    </tr>
+                    <tr>
+                        <td>Actor Implementation</td>
+                        <td>BEAM processes</td>
+                        <td>Akka framework actors</td>
+                    </tr>
+                    <tr>
+                        <td>Communication</td>
+                        <td>Asynchronous messages</td>
+                        <td>Asynchronous messages</td>
+                    </tr>
+                    <tr>
+                        <td>Supervision</td>
+                        <td>Dedicated supervisors</td>
+                        <td>Actor behaviors and hierarchy</td>
+                    </tr>
+                    <tr>
+                        <td>Default Failure Handling</td>
+                        <td>Depends on process and OTP setup</td>
+                        <td>Typed: stop; Classic: usually restart</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>
+                <strong>Overall Conclusion:</strong>
+                Erlang and Akka both apply actor-based
+                concurrency and supervision to build
+                fault-tolerant applications.
+                Erlang implements these features in
+                the BEAM runtime and OTP libraries,
+                while Akka brings actor programming
+                into the Scala and Java JVM ecosystem.
             </p>
 
             <h2>References</h2>
 
             <ul>
                 <li>
-                    <a href="https://doc.akka.io/libraries/akka-core/current/typed/guide/actors-intro.html"
+                    <a href="https://doc.akka.io/libraries/akka-core/current/typed/actors.html"
                        target="_blank"
                        rel="noopener noreferrer">
-                        Akka Documentation - Introduction to Actors
+                        Akka Documentation - Typed Actors
+                    </a>
+                </li>
+                <li>
+                    <a href="https://doc.akka.io/libraries/akka-core/current/typed/fault-tolerance.html"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Akka Documentation - Fault Tolerance
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.erlang.org/doc/apps/stdlib/supervisor.html"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Erlang/OTP - Supervisor Behaviour
                     </a>
                 </li>
                 <li>
@@ -189,6 +400,139 @@ system ! "hello"</code></pre>
         </p>
     </main>
 
-    <script src="../script.js"></script>
+    <!-- Interactive supervision demonstration -->
+
+    <script>
+    (() => {
+        const systemSelect =
+            document.getElementById("supervision-system");
+        const strategySelect =
+            document.getElementById("supervision-strategy");
+        const supervisorLabel =
+            document.getElementById("supervisor-label");
+        const workers =
+            document.getElementById("supervision-workers");
+        const explanation =
+            document.getElementById("supervision-explanation");
+        const result =
+            document.getElementById("supervision-result");
+        const failButton =
+            document.getElementById("supervision-fail");
+        const resetButton =
+            document.getElementById("supervision-reset");
+
+        const strategies = {
+            erlang: [
+                ["one_for_one", "One for one"],
+                ["one_for_all", "One for all"],
+                ["rest_for_one", "Rest for one"]
+            ],
+            akka: [
+                ["stop", "Stop (Typed default)"],
+                ["restart", "Restart"],
+                ["resume", "Resume"]
+            ]
+        };
+
+        const outcomes = {
+            one_for_one: {
+                states: ["Running", "Restarted", "Running"],
+                message: "Only Worker B is restarted."
+            },
+            one_for_all: {
+                states: ["Restarted", "Restarted", "Restarted"],
+                message: "All three workers are restarted."
+            },
+            rest_for_one: {
+                states: ["Running", "Restarted", "Restarted"],
+                message:
+                    "Worker B and later-started Worker C are restarted."
+            },
+            stop: {
+                states: ["Running", "Stopped", "Running"],
+                message: "Child B stops. Its parent remains active."
+            },
+            restart: {
+                states: ["Running", "Restarted", "Running"],
+                message:
+                    "Child B restarts with fresh behavior state."
+            },
+            resume: {
+                states: ["Running", "Resumed", "Running"],
+                message:
+                    "Child B continues without reinitialization."
+            }
+        };
+
+        let failed = false;
+
+        function renderSupervision() {
+            const system = systemSelect.value;
+            const strategy = strategySelect.value;
+
+            supervisorLabel.textContent =
+                system === "erlang"
+                    ? "Dedicated OTP Supervisor"
+                    : "Akka Parent Actor";
+
+            const states = failed
+                ? outcomes[strategy].states
+                : ["Running", "Running", "Running"];
+
+            workers.textContent =
+                states.map((state, i) =>
+                    `Worker ${"ABC"[i]}: ${state}`
+                ).join("\n");
+
+            explanation.textContent =
+                system === "erlang"
+                    ? "An OTP supervisor applies a restart strategy."
+                    : "Akka Typed applies the configured behavior strategy.";
+
+            result.textContent = failed
+                ? outcomes[strategy].message
+                : "All workers are running. Simulate a failure.";
+
+            failButton.disabled = failed;
+        }
+
+        function changeSystem() {
+            const system = systemSelect.value;
+
+            strategySelect.innerHTML = "";
+
+            strategies[system].forEach(([value, label]) => {
+                const option = document.createElement("option");
+                option.value = value;
+                option.textContent = label;
+                strategySelect.appendChild(option);
+            });
+
+            failed = false;
+            renderSupervision();
+        }
+
+        systemSelect.addEventListener("change", changeSystem);
+
+        strategySelect.addEventListener("change", () => {
+            failed = false;
+            renderSupervision();
+        });
+
+        failButton.addEventListener("click", () => {
+            failed = true;
+            renderSupervision();
+        });
+
+        resetButton.addEventListener("click", () => {
+            failed = false;
+            renderSupervision();
+        });
+
+        changeSystem();
+    })();
+    </script>
+
 </body>
 </html>
+
