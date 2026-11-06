@@ -241,3 +241,132 @@ if (traceLanguage) {
     renderTrace();
 }
 
+
+// Akka vs Erlang supervision demonstration
+
+const supervisionSystem =
+    document.getElementById("supervision-system");
+
+if (supervisionSystem) {
+    const strategySelect =
+        document.getElementById("supervision-strategy");
+    const supervisorLabel =
+        document.getElementById("supervisor-label");
+    const workers =
+        document.getElementById("supervision-workers");
+    const explanation =
+        document.getElementById("supervision-explanation");
+    const result =
+        document.getElementById("supervision-result");
+    const failButton =
+        document.getElementById("supervision-fail");
+    const resetButton =
+        document.getElementById("supervision-reset");
+
+    const strategies = {
+        erlang: [
+            ["one_for_one", "One for one"],
+            ["one_for_all", "One for all"],
+            ["rest_for_one", "Rest for one"]
+        ],
+        akka: [
+            ["stop", "Stop (Typed default)"],
+            ["restart", "Restart"],
+            ["resume", "Resume"]
+        ]
+    };
+
+    const outcomes = {
+        one_for_one: {
+            states: ["Running", "Restarted", "Running"],
+            message: "Only Worker B is restarted."
+        },
+        one_for_all: {
+            states: ["Restarted", "Restarted", "Restarted"],
+            message: "All workers are restarted."
+        },
+        rest_for_one: {
+            states: ["Running", "Restarted", "Restarted"],
+            message: "Worker B and later-started Worker C restart."
+        },
+        stop: {
+            states: ["Running", "Stopped", "Running"],
+            message: "Child B stops. Its parent remains active."
+        },
+        restart: {
+            states: ["Running", "Restarted", "Running"],
+            message: "Child B restarts with fresh behavior state."
+        },
+        resume: {
+            states: ["Running", "Resumed", "Running"],
+            message: "Child B resumes without reinitialization."
+        }
+    };
+
+    let failed = false;
+
+    function renderSupervision() {
+        const system = supervisionSystem.value;
+        const strategy = strategySelect.value;
+
+        supervisorLabel.textContent =
+            system === "erlang"
+                ? "Dedicated OTP Supervisor"
+                : "Akka Parent Actor";
+
+        const states = failed
+            ? outcomes[strategy].states
+            : ["Running", "Running", "Running"];
+
+        workers.textContent =
+            states.map((state, i) =>
+                `Worker ${"ABC"[i]}: ${state}`
+            ).join("\n");
+
+        explanation.textContent =
+            system === "erlang"
+                ? "An OTP supervisor applies a restart strategy."
+                : "Akka Typed applies the configured behavior strategy.";
+
+        result.textContent = failed
+            ? outcomes[strategy].message
+            : "All workers are running. Simulate a failure.";
+
+        failButton.disabled = failed;
+    }
+
+    function changeSystem() {
+        const system = supervisionSystem.value;
+
+        strategySelect.innerHTML = "";
+
+        strategies[system].forEach(([value, label]) => {
+            const option = document.createElement("option");
+            option.value = value;
+            option.textContent = label;
+            strategySelect.appendChild(option);
+        });
+
+        failed = false;
+        renderSupervision();
+    }
+
+    supervisionSystem.addEventListener("change", changeSystem);
+
+    strategySelect.addEventListener("change", () => {
+        failed = false;
+        renderSupervision();
+    });
+
+    failButton.addEventListener("click", () => {
+        failed = true;
+        renderSupervision();
+    });
+
+    resetButton.addEventListener("click", () => {
+        failed = false;
+        renderSupervision();
+    });
+
+    changeSystem();
+}
