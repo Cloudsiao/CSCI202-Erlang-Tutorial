@@ -20,16 +20,173 @@
             Back to Comparative Analysis
         </a>
 
-        <section>
-            <h2>Introduction</h2>
+        <section id="akka-scala">
+
+            <h2>1. Introduction to Akka and Scala</h2>
+
             <p>
-                Elixir is a separate programming language
-                that runs on the same BEAM virtual machine
-                as Erlang.
+                Scala is a statically typed programming
+                language that combines functional and
+                object-oriented programming.
             </p>
 
-            <!-- More tutorial content goes here -->
+            <p>
+                Akka is a framework for building
+                concurrent and distributed applications
+                using Scala and Java. It provides
+                actor-based programming features
+                while running on the Java Virtual
+                Machine (JVM).
+            </p>
+
+            <p>
+                Similar to Erlang, Akka uses the actor
+                model, where actors maintain their own
+                state and communicate through
+                asynchronous message passing.
+            </p>
+
+            <h3>Language, Framework, and Runtime</h3>
+
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Erlang</th>
+                        <th>Akka/Scala</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Programming Language</td>
+                        <td>Erlang</td>
+                        <td>Scala</td>
+                    </tr>
+                    <tr>
+                        <td>Type System</td>
+                        <td>Dynamic</td>
+                        <td>Static</td>
+                    </tr>
+                    <tr>
+                        <td>Virtual Machine</td>
+                        <td>BEAM</td>
+                        <td>JVM</td>
+                    </tr>
+                    <tr>
+                        <td>Actor Support</td>
+                        <td>Built into language/runtime</td>
+                        <td>Provided by Akka framework</td>
+                    </tr>
+                    <tr>
+                        <td>Communication</td>
+                        <td>Asynchronous messages</td>
+                        <td>Asynchronous messages</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>2. Actor-Based Concurrency</h2>
+
+            <p>
+                Both Erlang and Akka support actor-based
+                concurrency. Each actor has its own
+                logical state and mailbox, and processes
+                incoming messages one at a time.
+                Different actors can execute concurrently.
+            </p>
+
+            <p>
+                In Erlang, actors are implemented as
+                lightweight BEAM processes. In Akka,
+                actors are managed by the Akka framework,
+                which schedules their execution using
+                the JVM's underlying threads.
+            </p>
+
+            <h3>Example: Sending a Message</h3>
+
+            <h4>Erlang</h4>
+
+            <pre><code>Worker = spawn(fun() ->
+    receive
+        hello ->
+            io:format("Hello from Erlang!~n")
+    end
+end),
+
+Worker ! hello.</code></pre>
+
+            <p>Output:</p>
+            <pre><code>Hello from Erlang!</code></pre>
+
+            <p>
+                The spawn function creates a lightweight
+                process. The ! operator sends a message
+                to that process, and receive handles
+                the incoming message.
+            </p>
+
+            <h4>Scala with Akka Typed</h4>
+
+            <pre><code>import akka.actor.typed.ActorSystem
+import akka.actor.typed.scaladsl.Behaviors
+
+val worker = Behaviors.receiveMessage[String] {
+    case "hello" =>
+        println("Hello from Akka!")
+        Behaviors.same
+}
+
+val system = ActorSystem(worker, "WorkerSystem")
+
+system ! "hello"</code></pre>
+
+            <p>Output:</p>
+            <pre><code>Hello from Akka!</code></pre>
+
+            <p>
+                ActorSystem creates the actor system
+                with the specified behavior.
+                The ! operator sends a message
+                to the actor. The behavior handles
+                the message and returns Behaviors.same
+                to continue using the same behavior.
+            </p>
+
+            <p>
+                <strong>Key Difference:</strong>
+                Erlang provides lightweight processes
+                directly through BEAM. Akka provides
+                actor-based concurrency as a framework
+                that runs on the JVM.
+            </p>
+
+            <h2>References</h2>
+
+            <ul>
+                <li>
+                    <a href="https://doc.akka.io/libraries/akka-core/current/typed/guide/actors-intro.html"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Akka Documentation - Introduction to Actors
+                    </a>
+                </li>
+                <li>
+                    <a href="https://docs.scala-lang.org/scala3/book/scala-features.html"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Scala Documentation - Language Features
+                    </a>
+                </li>
+            </ul>
+
         </section>
+
+        <p>
+            <a href="comparative-analysis.html">
+                Back to Comparative Analysis
+            </a>
+        </p>
     </main>
 
     <script src="../script.js"></script>
