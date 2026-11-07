@@ -20,17 +20,500 @@
             Back to Comparative Analysis
         </a>
 
-        <section>
-            <h2>Introduction</h2>
+        <section id="pony">
+
+            <h2>1. Introduction to Pony</h2>
+
             <p>
-                Elixir is a separate programming language
-                that runs on the same BEAM virtual machine
-                as Erlang.
+                Pony is a statically typed,
+                actor-oriented programming language
+                that compiles to native machine code.
+                Like Erlang, it supports concurrency
+                through independent actors and
+                asynchronous message passing.
             </p>
 
-            <!-- More tutorial content goes here -->
+            <p>
+                However, Erlang is dynamically typed
+                and runs on BEAM, while Pony uses
+                a static type system with reference
+                capabilities to enforce safe access
+                to mutable and immutable objects.
+            </p>
+
+            <h3>Example: Pony Actors</h3>
+
+            <pre><code>actor Main
+    new create(env: Env) =&gt;
+        greet(env)
+
+    be greet(env: Env) =&gt;
+        env.out.print("Hello from Pony!")</code></pre>
+
+            <p>Output:</p>
+            <pre><code>Hello from Pony!</code></pre>
+
+            <p>
+                The actor keyword defines an actor.
+                The be keyword defines an asynchronous
+                behaviour. Calling a behaviour schedules
+                a message for the actor to process.
+            </p>
+
+            <h2>2. Reference Capabilities</h2>
+
+            <p>
+                A reference capability specifies
+                how a reference may access, modify,
+                or share an object. Pony's compiler
+                checks these capabilities to enforce
+                concurrency-safety guarantees.
+            </p>
+
+            <p>
+                Every reference has a type and
+                a reference capability. The type
+                describes the object, while the
+                capability determines the permitted
+                access through that reference.
+            </p>
+
+            <h3>The Six Reference Capabilities</h3>
+
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Capability</th>
+                        <th>Purpose</th>
+                        <th>Directly Sendable?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>iso</code></td>
+                        <td>Isolated mutable access</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td><code>val</code></td>
+                        <td>Deeply immutable access</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td><code>ref</code></td>
+                        <td>Mutable local access</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td><code>trn</code></td>
+                        <td>Mutable, convertible toward val</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td><code>box</code></td>
+                        <td>Read-only access</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td><code>tag</code></td>
+                        <td>Identity-only access</td>
+                        <td>Yes</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>
+                The discussion focuses on iso, val,
+                and ref because they demonstrate
+                Pony's approach to ownership transfer,
+                immutable sharing, and mutable
+                local references.
+            </p>
+
+            <h3>Isolated (iso)</h3>
+
+            <p>
+                An iso reference provides isolated
+                access to mutable data. Ownership
+                can be safely transferred to another
+                actor because the sender gives up
+                usable access to the transferred
+                object.
+            </p>
+
+            <h3>Value (val)</h3>
+
+            <p>
+                A val reference provides deeply
+                immutable access. Multiple actors
+                may safely share the same data
+                because no actor can modify it.
+            </p>
+
+            <h3>Reference (ref)</h3>
+
+            <p>
+                A ref reference permits mutable
+                access and multiple local aliases.
+                However, it cannot be sent directly
+                between actors because it does not
+                provide the guarantees required
+                for safe cross-actor sharing.
+            </p>
+
+            <h2>3. Interactive Reference Capability Demo</h2>
+
+            <p>
+                Select a reference capability and
+                advance through the steps to see
+                how two actors may access data.
+            </p>
+
+            <div class="pony-demo">
+
+                <label for="pony-capability">
+                    Select capability:
+                </label>
+
+                <select id="pony-capability">
+                    <option value="iso">
+                        iso - Ownership Transfer
+                    </option>
+                    <option value="val">
+                        val - Immutable Sharing
+                    </option>
+                    <option value="ref">
+                        ref - Local Mutable Access
+                    </option>
+                </select>
+
+                <h3 id="pony-step-title"></h3>
+
+                <p id="pony-step-counter"></p>
+
+                <table border="1" cellpadding="10">
+                    <thead>
+                        <tr>
+                            <th>Actor A</th>
+                            <th>Actor B</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="pony-actor-a"></td>
+                            <td id="pony-actor-b"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p id="pony-explanation"></p>
+
+                <button id="pony-prev">Previous</button>
+                <button id="pony-next">Next Step</button>
+
+            </div>
+
+            <p>
+                <strong>Note:</strong>
+                This is a conceptual demonstration,
+                not a running Pony compiler.
+                The exact validity of a reference
+                depends on Pony's aliasing and
+                capability rules.
+            </p>
+
+            <h2>4. Memory Management and Concurrency Safety</h2>
+
+            <p>
+                Erlang relies on process isolation
+                and immutable terms. Each Erlang
+                process normally has its own heap,
+                and ordinary message data is copied
+                between processes on the same node.
+            </p>
+
+            <p>
+                Pony instead uses compiler-enforced
+                reference capabilities to control
+                access to objects. An iso object
+                can be transferred between actors,
+                while val objects can be shared
+                without copying the underlying data.
+            </p>
+
+            <p>
+                Erlang also has sharing optimizations:
+                reference-counted binaries and certain
+                literal data can be shared between
+                processes on the same node.
+                Therefore, not every Erlang message
+                requires copying all underlying data.
+            </p>
+
+            <h3>Comparing Data Transfer</h3>
+
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Scenario</th>
+                        <th>Erlang</th>
+                        <th>Pony</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mutable objects</td>
+                        <td>Immutable language terms</td>
+                        <td>Allowed under capability rules</td>
+                    </tr>
+                    <tr>
+                        <td>Ordinary messages</td>
+                        <td>Generally copy terms</td>
+                        <td>Can pass safe references</td>
+                    </tr>
+                    <tr>
+                        <td>Mutable ownership transfer</td>
+                        <td>No equivalent for ordinary terms</td>
+                        <td><code>iso</code></td>
+                    </tr>
+                    <tr>
+                        <td>Immutable sharing</td>
+                        <td>Special sharing optimizations</td>
+                        <td><code>val</code></td>
+                    </tr>
+                    <tr>
+                        <td>Concurrency safety</td>
+                        <td>Process isolation and immutability</td>
+                        <td>Compiler-checked capabilities</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>5. Summary: Erlang vs. Pony</h2>
+
+            <p>
+                Both Erlang and Pony provide
+                actor-based concurrency with
+                asynchronous message passing.
+                However, they use different
+                approaches to memory safety.
+            </p>
+
+            <p>
+                Erlang emphasizes isolated
+                processes, immutable terms,
+                and fault recovery through OTP.
+                Pony emphasizes compiler-enforced
+                reference capabilities that permit
+                controlled mutation, safe ownership
+                transfer, and immutable sharing.
+            </p>
+
+            <p>
+                <strong>Key Takeaway:</strong>
+                Erlang generally avoids shared
+                mutable state by isolating processes.
+                Pony allows carefully controlled
+                object access through reference
+                capabilities checked at compile time.
+            </p>
+
+            <h2>References</h2>
+
+            <ul>
+                <li>
+                    <a href="https://tutorial.ponylang.io/types/actors"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Pony Tutorial - Actors
+                    </a>
+                </li>
+                <li>
+                    <a href="https://tutorial.ponylang.io/reference-capabilities/reference-capabilities"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Pony Tutorial - Reference Capabilities
+                    </a>
+                </li>
+                <li>
+                    <a href="https://tutorial.ponylang.io/reference-capabilities/passing-and-sharing"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Pony Tutorial - Passing and Sharing
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.erlang.org/doc/system/eff_guide_processes.html"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Erlang - Process Efficiency Guide
+                    </a>
+                </li>
+            </ul>
+
         </section>
+
+        <p>
+            <a href="comparative-analysis.html">
+                Back to Comparative Analysis
+            </a>
+        </p>
     </main>
+
+    <script>
+    (() => {
+        const selector =
+            document.getElementById("pony-capability");
+        const title =
+            document.getElementById("pony-step-title");
+        const counter =
+            document.getElementById("pony-step-counter");
+        const actorA =
+            document.getElementById("pony-actor-a");
+        const actorB =
+            document.getElementById("pony-actor-b");
+        const explanation =
+            document.getElementById("pony-explanation");
+        const previous =
+            document.getElementById("pony-prev");
+        const next =
+            document.getElementById("pony-next");
+
+        const steps = {
+            iso: [
+                {
+                    title: "Actor A Owns Mutable Data",
+                    a: "Owns and may modify data",
+                    b: "No access",
+                    description:
+                        "Actor A holds an isolated reference. " +
+                        "The data may be safely modified."
+                },
+                {
+                    title: "Transfer Ownership",
+                    a: "Gives up access",
+                    b: "Receives ownership",
+                    description:
+                        "An iso reference can be transferred. " +
+                        "Actor A relinquishes usable access " +
+                        "to the transferred object."
+                },
+                {
+                    title: "Actor B Modifies Data",
+                    a: "Cannot use transferred reference",
+                    b: "May read and modify data",
+                    description:
+                        "Actor B can now modify the object " +
+                        "without unsafe concurrent access " +
+                        "from Actor A."
+                }
+            ],
+
+            val: [
+                {
+                    title: "Immutable Data",
+                    a: "May read data",
+                    b: "No reference yet",
+                    description:
+                        "The object and its reachable data " +
+                        "are deeply immutable."
+                },
+                {
+                    title: "Share Immutable Reference",
+                    a: "May read data",
+                    b: "May read data",
+                    description:
+                        "The same immutable object may be " +
+                        "shared between actors."
+                },
+                {
+                    title: "Both Actors Read Safely",
+                    a: "Read only",
+                    b: "Read only",
+                    description:
+                        "Neither actor can modify the object, " +
+                        "so sharing does not create a data race."
+                }
+            ],
+
+            ref: [
+                {
+                    title: "Actor A Has Mutable Access",
+                    a: "May read and modify",
+                    b: "No access",
+                    description:
+                        "A ref permits mutable access and " +
+                        "local aliases within Actor A."
+                },
+                {
+                    title: "Attempt to Send ref",
+                    a: "Retains local access",
+                    b: "Cannot receive ref directly",
+                    description:
+                        "A ref is not a directly sendable " +
+                        "capability between actors."
+                },
+                {
+                    title: "Compiler Enforces the Rule",
+                    a: "Can continue local modification",
+                    b: "Direct transfer rejected",
+                    description:
+                        "The compiler prevents unsafe " +
+                        "sharing of mutable references. " +
+                        "Use iso or val where appropriate."
+                }
+            ]
+        };
+
+        let currentStep = 0;
+
+        function renderPony() {
+            const selectedSteps = steps[selector.value];
+            const current = selectedSteps[currentStep];
+
+            title.textContent = current.title;
+            counter.textContent =
+                `Step ${currentStep + 1} of ${selectedSteps.length}`;
+
+            actorA.textContent = current.a;
+            actorB.textContent = current.b;
+            explanation.textContent = current.description;
+
+            previous.disabled = currentStep === 0;
+
+            next.textContent =
+                currentStep === selectedSteps.length - 1
+                    ? "Restart"
+                    : "Next Step";
+        }
+
+        selector.addEventListener("change", () => {
+            currentStep = 0;
+            renderPony();
+        });
+
+        previous.addEventListener("click", () => {
+            if (currentStep > 0) {
+                currentStep--;
+            }
+            renderPony();
+        });
+
+        next.addEventListener("click", () => {
+            const selectedSteps = steps[selector.value];
+
+            currentStep =
+                (currentStep + 1) % selectedSteps.length;
+
+            renderPony();
+        });
+
+        renderPony();
+    })();
+    </script>
+</body>
+</html>
+
 
     <script src="../script.js"></script>
 </body>
