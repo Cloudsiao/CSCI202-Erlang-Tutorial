@@ -101,9 +101,18 @@ main {
 
 /* 5. TYPOGRAPHY */
 
+
 h1, h2, h3, h4 {
     line-height: 1.35;
     color: var(--primary);
+}
+
+/* White headings inside the dark header */
+header h1,
+header h2,
+header h3,
+header h4 {
+    color: #ffffff;
 }
 
 h2 {
