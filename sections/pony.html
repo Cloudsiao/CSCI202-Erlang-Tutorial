@@ -262,7 +262,14 @@
                 Therefore, not every Erlang message
                 requires copying all underlying data.
             </p>
-
+            
+            <p>
+                Pony's reference capability system provides compile-time
+                guarantees of data-race freedom for well-typed programs,
+                allowing actors to safely share immutable objects or
+                transfer isolated mutable objects.
+            </p>
+            
             <h3>Code Example: Erlang vs. Pony</h3>
 
             <p>
