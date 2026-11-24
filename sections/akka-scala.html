@@ -100,7 +100,15 @@
                 memory. Akka actors are managed by the
                 framework and scheduled using JVM threads.
             </p>
-
+            <p>
+                Erlang processes maintain isolated process-local memory,
+                and ordinary message data is generally copied between
+                processes. Akka actors, in contrast, operate within the
+                JVM heap and rely on actor state encapsulation and
+                immutable messages to avoid unsafe sharing of mutable
+                objects.
+            </p>
+            
             <h3>Example: Sending a Message</h3>
 
             <h4>Erlang</h4>
