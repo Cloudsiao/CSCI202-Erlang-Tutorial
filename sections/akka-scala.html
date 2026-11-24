@@ -166,6 +166,54 @@ system ! "hello"</code></pre>
                 a JVM framework.
             </p>
 
+            <h3>Selective Receive vs. Stashing</h3>
+
+            <p>
+                Although Erlang and Akka both support asynchronous actor-based
+                messaging, they differ in how messages are selected for processing.
+            </p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Erlang</th>
+                        <th>Akka Typed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Message Selection</td>
+                        <td>Selective receive</td>
+                        <td>Behavior handles delivered messages</td>
+                    </tr>
+                    <tr>
+                        <td>Unmatched Messages</td>
+                        <td>Remain in the mailbox</td>
+                        <td>Can be explicitly stashed</td>
+                    </tr>
+                    <tr>
+                        <td>Deferred Messages</td>
+                        <td>Original mailbox</td>
+                        <td>Separate bounded stash buffer</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>
+                For example, suppose messages A, B, and C are waiting in a
+                mailbox. Erlang can select message B through pattern matching
+                while leaving A and C queued. With an ordinary FIFO mailbox,
+                Akka delivers A first, but the actor can explicitly stash A
+                for later processing.
+            </p>
+
+            <p>
+                <strong>Key Difference:</strong>
+                Erlang provides built-in selective receive, whereas Akka
+                provides explicit mechanisms for deferring delivered messages.
+            </p>
+            
             <h2>3. Fault Tolerance and Supervision</h2>
 
             <p>
@@ -404,6 +452,11 @@ system ! "hello"</code></pre>
                         <td>Depends on process and OTP setup</td>
                         <td>Typed: stop; Classic: usually restart</td>
                     </tr>
+                    <tr>
+                        <td>Data Sharing</td>
+                        <td>Mostly copied between processes</td>
+                        <td>JVM heap; actor state encapsulation</td>
+                    </tr>
                 </tbody>
             </table>
 
@@ -447,6 +500,13 @@ system ! "hello"</code></pre>
                        target="_blank"
                        rel="noopener noreferrer">
                         Scala Documentation - Language Features
+                    </a>
+                </li>
+                <li>
+                    <a href="https://doc.akka.io/libraries/akka-core/current/typed/stash.html"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Akka Documentation - Stash
                     </a>
                 </li>
             </ul>
